@@ -89,7 +89,7 @@ namespace DWG.UBRS.TestStuff
         [HideInInspector]
         public bool canMove = true; // Public - Bool - canMove - True
 
-        // Public - Void - Start
+        // Public - Void -Start
         public void Start()
         {
 
@@ -143,10 +143,6 @@ namespace DWG.UBRS.TestStuff
 
             // float - curSpeedX - canMove - isRunning - runningSpeed - isCrouching - crouchSpeed - walkingSpeed - Input - GetAxis - Horizontal - 0
             float curSpeedY = canMove ? (isRunning ? runningSpeed : (isCrouching ? crouchSpeed : walkingSpeed)) * Input.GetAxis("Horizontal") : 0;
-
-            // Base
-            //float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
-            //float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
 
             // float - movementDirectionY - moveDirection -y
             float movementDirectionY = moveDirection.y;
@@ -204,8 +200,7 @@ namespace DWG.UBRS.TestStuff
                 moveDirection.y = movementDirectionY;
 
             } // Close - Else
-
-
+            
             // Crouching
 
             // If - Input - GetKeyDown - KeyCode - C - & canMove
@@ -259,9 +254,6 @@ namespace DWG.UBRS.TestStuff
 
             } // Close -  Else If - Not - isCrouching
 
-
-
-            
 
             // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
             // when the moveDirection is multiplied by deltaTime). This is because gravity should be applied
