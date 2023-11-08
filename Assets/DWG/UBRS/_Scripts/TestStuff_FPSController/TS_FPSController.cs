@@ -10,8 +10,8 @@ namespace DWG.UBRS.TestStuff
     // Require - Component - Type Of - CharacterController
     [RequireComponent(typeof(CharacterController))]
 
-    // RequireComponent - AudioSource
-    [RequireComponent(typeof (AudioSource))]
+    // RequireComponent - Type Of - AudioSource
+    [RequireComponent(typeof(AudioSource))]
 
     // Public - Class - TS_FPSController
     public class TS_FPSController : MonoBehaviour
@@ -93,25 +93,46 @@ namespace DWG.UBRS.TestStuff
         public bool canMove = true; // Public - Bool - canMove - True
 
         // Walking Footsteps
-
+        
+        // public AudioClip[] footstepSounds
         public AudioClip[] footstepSounds; // Array to hold footstep sound clips
-        public float minTimeBetweenFootsteps = 0.3f; // Minimum time between footstep sounds
-        public float maxTimeBetweenFootsteps = 0.6f; // Maximum time between footstep sounds
 
+        // public float minTimeBetweenFootsteps = 0.3f
+        public float minTimeBetweenFootsteps = 0.3f; // Minimum time between footstep sounds
+
+        // public float maxTimeBetweenFootsteps = 0.6f
+        public float maxTimeBetweenFootsteps = 0.6f; // Maximum time between footstep sounds
+        
+        // public AudioSource footstepAudioSource
         public AudioSource footstepAudioSource; // Reference to the Audio Source component
+
+        // public bool isWalking = false
         public bool isWalking = false; // Flag to track if the player is walking
+
+        // public float timeSinceLastFootstep
         public float timeSinceLastFootstep; // Time since the last footstep sound
 
         // Sprinting Footsteps
-
+        
+        // public AudioClip[] sprintstepSounds
         public AudioClip[] sprintstepSounds; // Array to hold sprint footstep sound clips
+
+        // public float minTimeBetweenSprintsteps = 0.2f
         public float minTimeBetweenSprintsteps = 0.2f; // Minimum time between sprint footstep sounds
+
+        // public float maxTimeBetweenSprintsteps = 0.4f
         public float maxTimeBetweenSprintsteps = 0.4f; // Maximum time between sprint footstep sounds
-
+        
+        // public AudioSource sprintstepAudioSource
         public AudioSource sprintstepAudioSource; // Reference to the Audio Source component
-        public bool isSprinting = false; // Flag to track if the player is sprinting
-        public float timeSinceLastSprintstep; // Time since the last sprint footstep sound
 
+        // public bool isSprinting = false
+        public bool isSprinting = false; // Flag to track if the player is sprinting
+
+        // public float timeSinceLastSprintstep
+        public float timeSinceLastSprintstep; // Time since the last sprint footstep sound
+        
+        // public void Awake
         public void Awake()
         {
 
@@ -121,7 +142,7 @@ namespace DWG.UBRS.TestStuff
            // sprintstepAudioSource
            sprintstepAudioSource = GetComponent<AudioSource>(); // Get the Audio Source component
 
-        }
+        } // Close - public void Awake
 
         // Public - Void -Start
         public void Start()
@@ -156,34 +177,58 @@ namespace DWG.UBRS.TestStuff
         {
 
             // Check if the player is walking
+
+            // if isWalking
             if (isWalking)
             {
+
                 // Check if enough time has passed to play the next footstep sound
+
+                // if
                 if (Time.time - timeSinceLastFootstep >= Random.Range(minTimeBetweenFootsteps, maxTimeBetweenFootsteps))
                 {
-                    // Play a random footstep sound from the array
-                    AudioClip footstepSound = footstepSounds[Random.Range(0, footstepSounds.Length)];
-                    footstepAudioSource.PlayOneShot(footstepSound);
 
+                    // Play a random footstep sound from the array
+
+                    // AudioClip footstepSound
+                    AudioClip footstepSound = footstepSounds[Random.Range(0, footstepSounds.Length)];
+
+                    // footstepAudioSource PlayOneShot
+                    footstepAudioSource.PlayOneShot(footstepSound);
+                    
+                    // timeSinceLastFootstep
                     timeSinceLastFootstep = Time.time; // Update the time since the last footstep sound
-                }
+
+                } // Close - if
     
-            }
+            } // Close - if isWalking
 
             // Check if the player is sprinting
+
+            // if isSprinting
             if (isSprinting)
             {
+
                 // Check if enough time has passed to play the next sprintstep sound
+
+                // if 
                 if (Time.time - timeSinceLastSprintstep >= Random.Range(minTimeBetweenSprintsteps, maxTimeBetweenSprintsteps))
                 {
-                    // Play a random sprintstep sound from the array
-                    AudioClip sprintstepSound = sprintstepSounds[Random.Range(0, sprintstepSounds.Length)];
-                    sprintstepAudioSource.PlayOneShot(sprintstepSound);
 
+                    // Play a random sprintstep sound from the array
+
+                    // AudioClip sprintstepSound
+                    AudioClip sprintstepSound = sprintstepSounds[Random.Range(0, sprintstepSounds.Length)];
+
+                    // sprintstepAudioSource PlayOneShot
+                    sprintstepAudioSource.PlayOneShot(sprintstepSound);
+                    
+                    // timeSinceLastSprintstep
                     timeSinceLastSprintstep = Time.time; // Update the time since the last sprintstep sound
-                }
+
+                } // Close - if
     
-            }
+            } // Close - if isSprinting
 
             // We are grounded, so recalculate move direction based on axes
 
