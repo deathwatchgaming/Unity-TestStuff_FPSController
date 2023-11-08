@@ -40,7 +40,6 @@ namespace DWG.UBRS.TestStuff
         // public - float - lookXLimit
         public float lookXLimit = 45.0f;
 
-
         // Crouching
 
         // public - bool - isCrouching
@@ -209,13 +208,13 @@ namespace DWG.UBRS.TestStuff
             if (isSprinting)
             {
 
-                // Check if enough time has passed to play the next sprintstep sound
+                // Check if enough time has passed to play the next sprint footstep sound
 
                 // if 
                 if (Time.time - timeSinceLastSprintstep >= Random.Range(minTimeBetweenSprintsteps, maxTimeBetweenSprintsteps))
                 {
 
-                    // Play a random sprintstep sound from the array
+                    // Play a random sprint footstep sound from the array
 
                     // AudioClip sprintstepSound
                     AudioClip sprintstepSound = sprintstepSounds[Random.Range(0, sprintstepSounds.Length)];
@@ -224,7 +223,7 @@ namespace DWG.UBRS.TestStuff
                     sprintstepAudioSource.PlayOneShot(sprintstepSound);
                     
                     // timeSinceLastSprintstep
-                    timeSinceLastSprintstep = Time.time; // Update the time since the last sprintstep sound
+                    timeSinceLastSprintstep = Time.time; // Update the time since the last sprint footstep sound
 
                 } // Close - if
     
@@ -363,7 +362,6 @@ namespace DWG.UBRS.TestStuff
 
             } // Close -  Else If - Not - isCrouching
 
-
             // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
             // when the moveDirection is multiplied by deltaTime). This is because gravity should be applied
             // as an acceleration (ms^-2)
@@ -425,7 +423,6 @@ namespace DWG.UBRS.TestStuff
 
             } // Close - Else
 
-
             // Player movement code - Walking
 
             // Input.GetKey(KeyCode.W) "Up / Forward"
@@ -433,6 +430,7 @@ namespace DWG.UBRS.TestStuff
             // if
             if (Input.GetAxis("Vertical") > 0 && canMove && characterController.isGrounded)
             {
+
                 // StartWalking
                 StartWalking();
 
@@ -443,6 +441,7 @@ namespace DWG.UBRS.TestStuff
             // else if            
             else if (Input.GetAxis("Vertical") < 0 && canMove && characterController.isGrounded)
             {
+
                 // StartWalking
                 StartWalking();
 
@@ -453,6 +452,7 @@ namespace DWG.UBRS.TestStuff
             // else if           
             else if (Input.GetAxis("Horizontal") > 0 && canMove && characterController.isGrounded)
             {
+
                 // StartWalking
                 StartWalking();
 
@@ -463,6 +463,7 @@ namespace DWG.UBRS.TestStuff
             // else if           
             else if (Input.GetAxis("Horizontal") < 0 && canMove && characterController.isGrounded)
             {
+
                 // StartWalking
                 StartWalking();
 
@@ -497,6 +498,7 @@ namespace DWG.UBRS.TestStuff
             // else if            
             else if (Input.GetAxis("Vertical") < 0 && canMove && characterController.isGrounded && isRunning)
             {
+
                 // StopWalking
                 StopWalking();
 
@@ -510,6 +512,7 @@ namespace DWG.UBRS.TestStuff
             // else if           
             else if (Input.GetAxis("Horizontal") > 0 && canMove && characterController.isGrounded && isRunning)
             {
+
                 // StopWalking
                 StopWalking();
 
@@ -523,6 +526,7 @@ namespace DWG.UBRS.TestStuff
             // else if           
             else if (Input.GetAxis("Horizontal") < 0 && canMove && characterController.isGrounded && isRunning)
             {
+
                 // StopWalking
                 StopWalking();
 
@@ -534,6 +538,7 @@ namespace DWG.UBRS.TestStuff
             // else
             else
             {
+
                 // StopSprinting
                 StopSprinting();	
 
@@ -546,6 +551,7 @@ namespace DWG.UBRS.TestStuff
         // void StartWalking
         void StartWalking()
         {
+
             // isWalking
             isWalking = true;
 
@@ -556,6 +562,7 @@ namespace DWG.UBRS.TestStuff
         // void StopWalking
         void StopWalking()
         {
+
             // isWalking
             isWalking = false;
 
@@ -566,6 +573,7 @@ namespace DWG.UBRS.TestStuff
         // void StartSprinting
         void StartSprinting()
         {
+
             // isSprinting
             isSprinting = true;
 
@@ -576,6 +584,7 @@ namespace DWG.UBRS.TestStuff
         // void StopSprinting
         void StopSprinting()
         {
+
             // isWalking
             isSprinting = false;
 
