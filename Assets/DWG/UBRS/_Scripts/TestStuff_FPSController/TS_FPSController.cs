@@ -10,6 +10,9 @@ namespace DWG.UBRS.TestStuff
     // Require - Component - Type Of - CharacterController
     [RequireComponent(typeof(CharacterController))]
 
+    // RequireComponent - AudioSource
+    [RequireComponent(typeof (AudioSource))]
+
     // Public - Class - TS_FPSController
     public class TS_FPSController : MonoBehaviour
     {
@@ -89,6 +92,37 @@ namespace DWG.UBRS.TestStuff
         [HideInInspector]
         public bool canMove = true; // Public - Bool - canMove - True
 
+        // Walking Footsteps
+
+        public AudioClip[] footstepSounds; // Array to hold footstep sound clips
+        public float minTimeBetweenFootsteps = 0.3f; // Minimum time between footstep sounds
+        public float maxTimeBetweenFootsteps = 0.6f; // Maximum time between footstep sounds
+
+        public AudioSource footstepAudioSource; // Reference to the Audio Source component
+        public bool isWalking = false; // Flag to track if the player is walking
+        public float timeSinceLastFootstep; // Time since the last footstep sound
+
+        // Sprinting Footsteps
+
+        public AudioClip[] sprintstepSounds; // Array to hold sprint footstep sound clips
+        public float minTimeBetweenSprintsteps = 0.2f; // Minimum time between sprint footstep sounds
+        public float maxTimeBetweenSprintsteps = 0.4f; // Maximum time between sprint footstep sounds
+
+        public AudioSource sprintstepAudioSource; // Reference to the Audio Source component
+        public bool isSprinting = false; // Flag to track if the player is sprinting
+        public float timeSinceLastSprintstep; // Time since the last sprint footstep sound
+
+        public void Awake()
+        {
+
+           // footstepAudioSource
+           footstepAudioSource = GetComponent<AudioSource>(); // Get the Audio Source component
+
+           // sprintstepAudioSource
+           sprintstepAudioSource = GetComponent<AudioSource>(); // Get the Audio Source component
+
+        }
+
         // Public - Void -Start
         public void Start()
         {
@@ -120,6 +154,36 @@ namespace DWG.UBRS.TestStuff
         // Public - Void - Update
         public void Update()
         {
+
+            // Check if the player is walking
+            if (isWalking)
+            {
+                // Check if enough time has passed to play the next footstep sound
+                if (Time.time - timeSinceLastFootstep >= Random.Range(minTimeBetweenFootsteps, maxTimeBetweenFootsteps))
+                {
+                    // Play a random footstep sound from the array
+                    AudioClip footstepSound = footstepSounds[Random.Range(0, footstepSounds.Length)];
+                    footstepAudioSource.PlayOneShot(footstepSound);
+
+                    timeSinceLastFootstep = Time.time; // Update the time since the last footstep sound
+                }
+    
+            }
+
+            // Check if the player is sprinting
+            if (isSprinting)
+            {
+                // Check if enough time has passed to play the next sprintstep sound
+                if (Time.time - timeSinceLastSprintstep >= Random.Range(minTimeBetweenSprintsteps, maxTimeBetweenSprintsteps))
+                {
+                    // Play a random sprintstep sound from the array
+                    AudioClip sprintstepSound = sprintstepSounds[Random.Range(0, sprintstepSounds.Length)];
+                    sprintstepAudioSource.PlayOneShot(sprintstepSound);
+
+                    timeSinceLastSprintstep = Time.time; // Update the time since the last sprintstep sound
+                }
+    
+            }
 
             // We are grounded, so recalculate move direction based on axes
 
@@ -316,7 +380,161 @@ namespace DWG.UBRS.TestStuff
 
             } // Close - Else
 
+
+            // Player movement code - Walking
+
+            // Input.GetKey(KeyCode.W) "Up / Forward"
+
+            // if
+            if (Input.GetAxis("Vertical") > 0 && canMove && characterController.isGrounded)
+            {
+                // StartWalking
+                StartWalking();
+
+            } // Close - if
+
+            // Input.GetKey(KeyCode.S) "Down / Backward"
+
+            // else if            
+            else if (Input.GetAxis("Vertical") < 0 && canMove && characterController.isGrounded)
+            {
+                // StartWalking
+                StartWalking();
+
+            } // Close - else if
+
+            // Input.GetKey(KeyCode.D) "Right"
+
+            // else if           
+            else if (Input.GetAxis("Horizontal") > 0 && canMove && characterController.isGrounded)
+            {
+                // StartWalking
+                StartWalking();
+
+            } // Close - else if
+            
+            // Input.GetKey(KeyCode.A) "Left"
+
+            // else if           
+            else if (Input.GetAxis("Horizontal") < 0 && canMove && characterController.isGrounded)
+            {
+                // StartWalking
+                StartWalking();
+
+            } // Close - else if 
+
+            // else
+            else
+            {
+                // StopWalking
+                StopWalking();	
+
+            } // Close - else
+
+            // Player movement code - Sprinting
+
+            // Input.GetKey(KeyCode.W) "Up / Forward" + Input.GetKey(KeyCode.LeftShift)
+
+            // if
+            if (Input.GetAxis("Vertical") > 0 && canMove && characterController.isGrounded && isRunning)
+            {
+
+                // StopWalking
+                StopWalking();
+
+                // StartSprinting
+                StartSprinting();
+
+            } // Close - if
+
+            // Input.GetKey(KeyCode.S) "Down / Backward" + Input.GetKey(KeyCode.LeftShift)
+
+            // else if            
+            else if (Input.GetAxis("Vertical") < 0 && canMove && characterController.isGrounded && isRunning)
+            {
+                // StopWalking
+                StopWalking();
+
+                // StartSprinting
+                StartSprinting();
+
+            } // Close - else if
+
+            // Input.GetKey(KeyCode.D) "Right" + Input.GetKey(KeyCode.LeftShift)
+
+            // else if           
+            else if (Input.GetAxis("Horizontal") > 0 && canMove && characterController.isGrounded && isRunning)
+            {
+                // StopWalking
+                StopWalking();
+
+                // StartSprinting
+                StartSprinting();
+
+            } // Close - else if
+            
+            // Input.GetKey(KeyCode.A) "Left" + Input.GetKey(KeyCode.LeftShift)
+
+            // else if           
+            else if (Input.GetAxis("Horizontal") < 0 && canMove && characterController.isGrounded && isRunning)
+            {
+                // StopWalking
+                StopWalking();
+
+                // StartSprinting
+                StartSprinting();
+
+            } // Close - else if 
+
+            // else
+            else
+            {
+                // StopSprinting
+                StopSprinting();	
+
+            } // Close - else
+
         } // Close - Public - Void - Update
+
+        // Call this method when the player starts walking
+
+        // void StartWalking
+        void StartWalking()
+        {
+            // isWalking
+            isWalking = true;
+
+        } // Close - void StartWalking
+
+        // Call this method when the player stops walking
+
+        // void StopWalking
+        void StopWalking()
+        {
+            // isWalking
+            isWalking = false;
+
+        } // Close - void StopWalking
+
+        // Call this method when the player starts running
+
+        // void StartSprinting
+        void StartSprinting()
+        {
+            // isSprinting
+            isSprinting = true;
+
+        } // Close - void StartSprinting
+
+        // Call this method when the player stops running
+
+        // void StopSprinting
+        void StopSprinting()
+        {
+            // isWalking
+            isSprinting = false;
+
+        } // Close - void StopSprinting
 
     } // Close - Public - Class - TS_FPSController
 
