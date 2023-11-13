@@ -170,18 +170,18 @@ ____________________________________________________________________
 Step 8:
 ____________________________________________________________________
 
-Now Attach The TS_HeadBobber, Component / Script To: 
+Now Attach The TS_FPSHeadBobber, Component / Script To: 
 
  In "FPSController" -> "Player Camera" 
 
- Script: "TS_HeadBobber.cs"
+ Script: "TS_FPSHeadBobber.cs"
 
  Next, Modify In: "FPSController" -> Player Camera Inspector, 
  The Component: 
 
-"TS_HeadBobber (Script)"
+"TS_FPS HeadBobber (Script)"
 
-Script: TS_HeadBobber
+Script: TS_FPSHeadBobber
 Walking Bobbing Speed: 14
 Bobbing Amount: 0.05
 Controller: FPSController (TS_FPS Controller)

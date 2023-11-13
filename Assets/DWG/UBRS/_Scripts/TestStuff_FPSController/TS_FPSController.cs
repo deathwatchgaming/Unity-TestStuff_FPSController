@@ -1,4 +1,13 @@
-// Using - System - Engine
+/*
+*
+*  Name: DWG TestStuff FPSController
+*  File: TS_FPSController.cs
+*  Author: Deathwatch Gaming
+*  License: MIT
+*
+*/
+
+// using - System - Engine
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,130 +16,137 @@ using UnityEngine;
 namespace DWG.UBRS.TestStuff
 {
 
-    // Require - Component - Type Of - CharacterController
+    // RequireComponent - Type Of - CharacterController
     [RequireComponent(typeof(CharacterController))]
 
     // RequireComponent - Type Of - AudioSource
-    [RequireComponent(typeof(AudioSource))]
+    [RequireComponent(typeof(AudioSource))]    
 
-    // Public - Class - TS_FPSController
+    // public class TS_FPSController
     public class TS_FPSController : MonoBehaviour
     {
-
-        // Standard
-
-        // public - float - walkingSpeed
-        public float walkingSpeed = 7.5f;
-
-        // public - float - runningSpeed
-        public float runningSpeed = 11.5f;
-
-        // public - float - jumpSpeed
-        public float jumpSpeed = 8.0f;
-
-        // public float gravity
-        public float gravity = 20.0f;
-
-        // public - Camera - playerCamera
-        public Camera playerCamera;
-
-        // public - float - lookSpeed
-        public float lookSpeed = 2.0f;
-
-        // public - float - lookXLimit
-        public float lookXLimit = 45.0f;
-
-        // Crouching
-
-        // public - bool - isCrouching
-        public bool isCrouching = false;
-
-        // public - float - crouchHeight
-        public float crouchHeight = 0.5f;
-
-        // public - float - crouchSpeed
-        public float crouchSpeed = 3.5f;
-
-        // public - float - crouchTransitionSpeed
-        public float crouchTransitionSpeed = 10f;
-
-        // private - float - originalHeight
-        private float originalHeight;
-
-        // public - float - crouchCameraOffset
-        public float crouchCameraOffset = -0.5f;
-
-        // private - Vector3 - cameraStandPosition
-        private Vector3 cameraStandPosition;
-
-        // private - Vector3 - cameraCrouchPosition
-        private Vector3 cameraCrouchPosition;
-
-        // Wall Jumping
-
-        // public - LayerMask - wallLayer
-        public LayerMask wallLayer;
-
-        // public - float - wallJumpForce
-        public float wallJumpForce = 10f;
-
-        // private - bool - isTouchingWall
-        private bool isTouchingWall = false;
-
-        // CharacterController - characterController 
-        CharacterController characterController;
-
-        // Hide In Inspector 
-        [HideInInspector]
-        public Vector3 moveDirection = Vector3.zero; // public - Vector3 - moveDirection - Vector3 - zero
-
-        // Float - RotationX - 0
-        float rotationX = 0;
-
-        // Hide In Inspector 
-        [HideInInspector]
-        public bool canMove = true; // Public - Bool - canMove - True
-
-        // Walking Footsteps
+        // CharacterController characterController
+        CharacterController characterController;    
         
-        // public AudioClip[] footstepSounds
-        public AudioClip[] footstepSounds; // Array to hold footstep sound clips
+        // Header Standard Movement
+        [Header("Standard Movement")]
 
-        // public float minTimeBetweenFootsteps = 0.3f
-        public float minTimeBetweenFootsteps = 0.3f; // Minimum time between footstep sounds
+            // public float walkingSpeed = 7.5f
+            public float walkingSpeed = 7.5f;
 
-        // public float maxTimeBetweenFootsteps = 0.6f
-        public float maxTimeBetweenFootsteps = 0.6f; // Maximum time between footstep sounds
+            // public float runningSpeed = 11.5f
+            public float runningSpeed = 11.5f;
+
+            // public float jumpSpeed = 8.0f
+            public float jumpSpeed = 8.0f;
+
+            // public float gravity = 20.0f
+            public float gravity = 20.0f;
+
+            // public Camera playerCamera
+            public Camera playerCamera;
+
+            // public float lookSpeed = 2.0f
+            public float lookSpeed = 2.0f;
+
+            // public float lookXLimit = 45.0f
+            public float lookXLimit = 45.0f;
+
+            // HideInInspector
+            [HideInInspector]
+            public Vector3 moveDirection = Vector3.zero; // public Vector3 moveDirection = Vector3.zero
+
+            // float rotationX = 0
+            float rotationX = 0;
+
+            // HideInInspector
+            [HideInInspector]
+            public bool canMove = true; // public bool canMove = true
         
-        // public AudioSource footstepAudioSource
-        public AudioSource footstepAudioSource; // Reference to the Audio Source component
+        // Header Crouching Movement
+        [Header("Crouching Movement")]
 
-        // public bool isWalking = false
-        public bool isWalking = false; // Flag to track if the player is walking
+            // public bool isCrouching = false
+            public bool isCrouching = false;
 
-        // public float timeSinceLastFootstep
-        public float timeSinceLastFootstep; // Time since the last footstep sound
+            // public float crouchHeight = 0.5f
+            public float crouchHeight = 0.5f;
 
-        // Sprinting Footsteps
+            // public float crouchSpeed = 3.5f
+            public float crouchSpeed = 3.5f;
+
+            // public float crouchTransitionSpeed = 10f
+            public float crouchTransitionSpeed = 10f;
+
+            // private float originalHeight
+            private float originalHeight;
+
+            // public float crouchCameraOffset = -0.5f
+            public float crouchCameraOffset = -0.5f;
+
+            // HideInInspector
+            [HideInInspector]
+            public Vector3 cameraStandPosition; // public Vector3 cameraStandPosition
+
+            // HideInInspector
+            [HideInInspector]
+            public Vector3 cameraCrouchPosition; // public Vector3 cameraCrouchPosition  
         
-        // public AudioClip[] sprintstepSounds
-        public AudioClip[] sprintstepSounds; // Array to hold sprint footstep sound clips
+        // Header WallJump Movement
+        [Header("WallJump Movement")]
 
-        // public float minTimeBetweenSprintsteps = 0.2f
-        public float minTimeBetweenSprintsteps = 0.2f; // Minimum time between sprint footstep sounds
+            // public LayerMask wallLayer
+            public LayerMask wallLayer;
 
-        // public float maxTimeBetweenSprintsteps = 0.4f
-        public float maxTimeBetweenSprintsteps = 0.4f; // Maximum time between sprint footstep sounds
-        
-        // public AudioSource sprintstepAudioSource
-        public AudioSource sprintstepAudioSource; // Reference to the Audio Source component
+            // public float wallJumpForce = 10f
+            public float wallJumpForce = 10f;
 
-        // public bool isSprinting = false
-        public bool isSprinting = false; // Flag to track if the player is sprinting
+            // private bool isTouchingWall = false
+            private bool isTouchingWall = false;
 
-        // public float timeSinceLastSprintstep
-        public float timeSinceLastSprintstep; // Time since the last sprint footstep sound
-        
+        // Header Footstep Audio
+        [Header("Audio")]
+
+            // Walking Footsteps
+            
+            // public AudioClip[] footstepSounds
+            public AudioClip[] footstepSounds; // Array to hold footstep sound clips
+
+            // public float minTimeBetweenFootsteps = 0.3f
+            public float minTimeBetweenFootsteps = 0.3f; // Minimum time between footstep sounds
+
+            // public float maxTimeBetweenFootsteps = 0.6f
+            public float maxTimeBetweenFootsteps = 0.6f; // Maximum time between footstep sounds
+            
+            // public AudioSource footstepAudioSource
+            public AudioSource footstepAudioSource; // Reference to the Audio Source component
+
+            // public bool isWalking = false
+            public bool isWalking = false; // Flag to track if the player is walking
+
+            // public float timeSinceLastFootstep
+            public float timeSinceLastFootstep; // Time since the last footstep sound
+
+            // Sprinting Footsteps
+            
+            // public AudioClip[] sprintstepSounds
+            public AudioClip[] sprintstepSounds; // Array to hold sprint footstep sound clips
+
+            // public float minTimeBetweenSprintsteps = 0.2f
+            public float minTimeBetweenSprintsteps = 0.2f; // Minimum time between sprint footstep sounds
+
+            // public float maxTimeBetweenSprintsteps = 0.4f
+            public float maxTimeBetweenSprintsteps = 0.4f; // Maximum time between sprint footstep sounds
+            
+            // public AudioSource sprintstepAudioSource
+            public AudioSource sprintstepAudioSource; // Reference to the Audio Source component
+
+            // public bool isSprinting = false
+            public bool isSprinting = false; // Flag to track if the player is sprinting
+
+            // public float timeSinceLastSprintstep
+            public float timeSinceLastSprintstep; // Time since the last sprint footstep sound
+
         // public void Awake
         public void Awake()
         {
@@ -143,37 +159,248 @@ namespace DWG.UBRS.TestStuff
 
         } // Close - public void Awake
 
-        // Public - Void -Start
+        // Start is called before the first frame update
+
+        // Use This For Initialization
+
+        // public void Start
         public void Start()
         {
 
-            // characterController - GetComponent - CharacterController
+            // characterController = GetComponent CharacterController
             characterController = GetComponent<CharacterController>();
 
-            // originalHeight - characterController - height
+            // Since we can Crouch add characterController original height of characterController
+
+            // originalHeight = characterController.height
             originalHeight = characterController.height;
 
             // Define camera positions for standing and crouching
 
-            // cameraStandPosition - playerCamera - transform -localPosition
+            // cameraStandPosition = playerCamera.transform.localPosition
             cameraStandPosition = playerCamera.transform.localPosition;
 
-            // cameraCrouchPosition - cameraStandPosition - new Vector3 - 0 - crouchCameraOffset - 0
+            // cameraCrouchPosition
             cameraCrouchPosition = cameraStandPosition + new Vector3(0, crouchCameraOffset, 0);
 
             // Lock cursor
 
-            // Cursor - lockState - CursorLockMode - Locked
+            // Cursor.lockState = CursorLockMode.Locked
             Cursor.lockState = CursorLockMode.Locked;
 
-            // Cursor - visible - false
+            // Cursor.visible = false
             Cursor.visible = false;
 
-        } // Close - Public - Void - Start
+        } // Close - public void Start
+        
+        // Update is called once per frame
 
-        // Public - Void - Update
+        // public void Update
         public void Update()
         {
+
+            // We are grounded, so recalculate move direction based on axes
+
+            // Vector3 forward
+            Vector3 forward = transform.TransformDirection(Vector3.forward);
+
+            // Vector3 right
+            Vector3 right = transform.TransformDirection(Vector3.right);
+
+            // Press Left Shift to run
+
+            // bool isRunning = Input.GetKey(KeyCode.LeftShift)
+            bool isRunning = Input.GetKey(KeyCode.LeftShift);
+            
+            // Movement Speeds
+
+            // float curSpeedX
+            float curSpeedX = canMove ? (isRunning ? runningSpeed : (isCrouching ? crouchSpeed : walkingSpeed)) * Input.GetAxis("Vertical") : 0;
+
+            // float curSpeedY
+            float curSpeedY = canMove ? (isRunning ? runningSpeed : (isCrouching ? crouchSpeed : walkingSpeed)) * Input.GetAxis("Horizontal") : 0;
+            
+            // float movementDirectionY
+            float movementDirectionY = moveDirection.y;
+
+            // moveDirection
+            moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+
+            // Crouching
+
+            // if Input.GetKeyDown(KeyCode.C) && canMove
+            if (Input.GetKeyDown(KeyCode.C) && canMove)
+            {
+
+                // isCrouching = !isCrouching
+                isCrouching = !isCrouching;
+                
+                // if isCrouching
+                if (isCrouching)
+                {
+
+                    // characterController.height
+                    characterController.height = crouchHeight;
+
+                    // walkingSpeed = crouchSpeed
+                    walkingSpeed = crouchSpeed;
+                    
+                    // Debug Log
+                    //Debug.Log("Player is Crouching.");
+
+                } // Close - if isCrouching
+                
+                // else
+                else
+                {
+
+                    // characterController.height
+                    characterController.height = originalHeight;
+
+                    // walkingSpeed = 7.5f
+                    walkingSpeed = 7.5f;
+
+                } // Close - else
+
+            } // Close - if Input.GetKeyDown(KeyCode.C) && canMove
+            
+            // if isCrouching
+            if (isCrouching)
+            {
+
+                // playerCamera.transform.localPosition
+                playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, cameraCrouchPosition, crouchTransitionSpeed * Time.deltaTime);
+
+            } // Close - if isCrouching
+            
+            // else
+            else
+            {
+
+                // playerCamera.transform.localPosition
+                playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, cameraStandPosition, crouchTransitionSpeed * Time.deltaTime);
+
+            } // Close - else
+
+            // Jumping
+
+            // if
+            if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
+            {
+
+                // moveDirection.y
+                moveDirection.y = jumpSpeed;
+                
+                // Debug Log
+                //Debug.Log("Player is Ground Jumping.");
+
+            } // Close - if
+
+            // Wall Jumping
+
+            // else if Input.GetButton("Jump") && canMove && isTouchingWall
+            else if (Input.GetButton("Jump") && canMove && isTouchingWall)
+            {
+
+                // moveDirection.y
+                moveDirection.y = wallJumpForce;
+                
+                // Debug Log
+                //Debug.Log("Player is Wall Jumping.");
+
+                // This adds a bit of horizontal force opposite the wall for a more dynamic jump
+
+                // if 
+                if (Physics.Raycast(transform.position, transform.right, 1f, wallLayer))
+                {
+                    
+                    // moveDirection
+                    moveDirection += -transform.right * wallJumpForce / 2.5f; // Adjust the divisor for stronger/weaker push.
+
+                } // Close - if
+
+                // else if
+                else if (Physics.Raycast(transform.position, -transform.right, 1f, wallLayer))
+                {
+
+                    // moveDirection
+                    moveDirection += transform.right * wallJumpForce / 2.5f;
+
+                } // Close - else if 
+
+            } // Close - else if Input.GetButton("Jump") && canMove && isTouchingWall
+            
+            // else 
+            else
+            {
+
+                // moveDirection.y
+                moveDirection.y = movementDirectionY;
+
+            } // Close - else
+
+            // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
+            // when the moveDirection is multiplied by deltaTime). This is because gravity should be applied
+            // as an acceleration (ms^-2)
+
+            // if !characterController.isGrounded
+            if (!characterController.isGrounded)
+            {
+
+                // moveDirection.y
+                moveDirection.y -= gravity * Time.deltaTime;
+
+            } // Close - if !characterController.isGrounded
+
+            // Move the controller
+
+            // characterController.Move
+            characterController.Move(moveDirection * Time.deltaTime);
+
+            // Player and Camera rotation
+
+            // if canMove
+            if (canMove)
+            {
+
+                // rotationX
+                rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+
+                // rotationX
+                rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+
+                // playerCamera.transform.localRotation
+                playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+
+                // transform.rotation
+                transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+
+            } // Close - if canMove
+            
+            // Detect Walls
+            
+            // RaycastHit hit
+            RaycastHit hit;
+            
+            // if
+            if (Physics.Raycast(transform.position, transform.right, out hit, 1f, wallLayer) || Physics.Raycast(transform.position, -transform.right, out hit, 1f, wallLayer))
+            {
+
+                // isTouchingWall = true;
+                isTouchingWall = true;
+
+            } // Close - if 
+            
+            // else 
+            else
+            {
+
+                // isTouchingWall = false
+                isTouchingWall = false;
+
+            } // Close - else
+
+            // Footstep Sounds
 
             // Check if the player is walking
 
@@ -229,200 +456,6 @@ namespace DWG.UBRS.TestStuff
     
             } // Close - if isSprinting
 
-            // We are grounded, so recalculate move direction based on axes
-
-            // Vector3 - forward - transform - TransformDirection - Vector3 - forward
-            Vector3 forward = transform.TransformDirection(Vector3.forward);
-
-            // Vector3 - right - transform - TransformDirection - Vector3 - right
-            Vector3 right = transform.TransformDirection(Vector3.right);
-
-            // Press Left Shift to run
-
-            // bool - isRunning - Input - GetKey - KeyCode - LeftShift
-            bool isRunning = Input.GetKey(KeyCode.LeftShift);
-
-            // Player's movement speed
-
-            // Walking - Running - Crouching 
-
-            // float - curSpeedX - canMove - isRunning - runningSpeed - isCrouching - crouchSpeed - walkingSpeed - Input - GetAxis - Vertical - 0
-            float curSpeedX = canMove ? (isRunning ? runningSpeed : (isCrouching ? crouchSpeed : walkingSpeed)) * Input.GetAxis("Vertical") : 0;
-
-            // float - curSpeedX - canMove - isRunning - runningSpeed - isCrouching - crouchSpeed - walkingSpeed - Input - GetAxis - Horizontal - 0
-            float curSpeedY = canMove ? (isRunning ? runningSpeed : (isCrouching ? crouchSpeed : walkingSpeed)) * Input.GetAxis("Horizontal") : 0;
-
-            // float - movementDirectionY - moveDirection -y
-            float movementDirectionY = moveDirection.y;
-
-            // moveDirection - forward - curSpeedX - right - curSpeedY
-            moveDirection = (forward * curSpeedX) + (right * curSpeedY);
-
-            // Jump
-
-            // If - Input - GetButton - Jump - & canMove - & characterController - isGrounded
-            if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
-            {
-
-                // moveDirection - y - jumpSpeed
-                moveDirection.y = jumpSpeed;
-
-            } // Close -  If - Input - GetButton - Jump - & canMove - & characterController - isGrounded
-
-            // Wall Jump
-
-            // Else If - Input - GetButton - Jump - & canMove & isTouchingWall
-            else if (Input.GetButton("Jump") && canMove && isTouchingWall)
-            {
-
-                // moveDirection - y - wallJumpForce
-                moveDirection.y = wallJumpForce;
-
-                // This adds a bit of horizontal force opposite the wall for a more dynamic jump
-
-                // If - Physics - Raycast - transform - position - transform - right - 1f - wallLayer
-                if (Physics.Raycast(transform.position, transform.right, 1f, wallLayer))
-                {
-
-                    // moveDirection - -transform - right - wallJumpForce
-                    moveDirection += -transform.right * wallJumpForce / 2.5f; // Adjust the divisor for stronger/weaker push.
-
-                } // Close -  If - Physics - Raycast - transform - position - transform - right - 1f - wallLayer
-
-                // Else If - Physics - Raycast - transform - position - -transform right - 1f - wallLayer
-                else if (Physics.Raycast(transform.position, -transform.right, 1f, wallLayer))
-                {
-
-                    // moveDirection - transform - right - wallJumpForce 
-                    moveDirection += transform.right * wallJumpForce / 2.5f;
-
-                } // Close - Else If
-
-            } // Close - Else If - Input - GetButton - Jump - & canMove & isTouchingWall
-
-            // Else
-            else
-            {
-
-                // moveDirection - y - movementDirectionY
-                moveDirection.y = movementDirectionY;
-
-            } // Close - Else
-            
-            // Crouching
-
-            // If - Input - GetKeyDown - KeyCode - C - & canMove
-            if (Input.GetKeyDown(KeyCode.C) && canMove)
-            {
-        
-                // isCrouching - Not isCrouching
-                isCrouching = !isCrouching;
-
-                // If - isCrouching
-                if (isCrouching)
-                {
-
-                    // characterController - height - crouchHeight
-                    characterController.height = crouchHeight;
-
-                    // walkingSpeed - crouchSpeed
-                    walkingSpeed = crouchSpeed;
-
-                } // Close - If - isCrouching
-
-                // Else If - Not - isCrouching
-                else if (!isCrouching)
-                {
-
-                    // characterController - height - originalHeight
-                    characterController.height = originalHeight;
-
-                    // walkingSpeed - 7.5
-                    walkingSpeed = 7.5f;
-
-                } // Close -  Else If - Not - isCrouching
-
-            } // Close - If - Input - GetKeyDown - KeyCode - C - & canMove
-
-            // If - isCrouching
-            if (isCrouching)
-            {
-
-                // playerCamera - transform - localPosition - Vector3 - Lerp - playerCamera - transform - localPosition - cameraCrouchPosition - crouchTransitionSpeed - Time - deltaTime
-                playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, cameraCrouchPosition, crouchTransitionSpeed * Time.deltaTime);
-
-            } // Close -  If - isCrouching
-
-            // Else If - Not - isCrouching
-            else if (!isCrouching)
-            {
-
-                // playerCamera - transform - localPosition - Vector3 - Lerp - playerCamera - transform - localPosition - cameraStandPosition - crouchTransitionSpeed - Time - deltaTime
-                playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, cameraStandPosition, crouchTransitionSpeed * Time.deltaTime);
-
-            } // Close -  Else If - Not - isCrouching
-
-            // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
-            // when the moveDirection is multiplied by deltaTime). This is because gravity should be applied
-            // as an acceleration (ms^-2)
-
-            // If - Not - characterController - isGrounded
-            if (!characterController.isGrounded)
-            {
-
-                // moveDirection - y - gravity - Time - deltaTime
-                moveDirection.y -= gravity * Time.deltaTime;
-
-            } // Close - If - Not - characterController - isGrounded
-
-            // Move the controller
-
-            // characterController - Move - moveDirection - Time - deltaTime
-            characterController.Move(moveDirection * Time.deltaTime);
-
-            // Player and Camera rotation
-
-            // If - canMove
-            if (canMove)
-            {
-
-                // rotationX - -Input - GetAxis - Mouse - Y - lookSpeed
-                rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
-
-                // rotationX - Mathf - Clamp - rotationX - -lookXLimit - lookXLimit
-                rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-
-                // playerCamera - transform - localRotation Quaternion - Euler - rotationX - 0 - 0
-                playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-
-                // transform - rotation - Quaternion - Euler - 0 - Input - GetAxis - Mouse - X - lookSpeed - 0
-                transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
-
-            } // Close - If - canMove
-
-            // Detect Walls       
-
-            // RaycastHit - hit
-            RaycastHit hit;
-
-            // If - Physics - Raycast - transform - position - transform - right - out hit - 1f -wallLayer - Physics - Raycast - transform - position - -transform - right - out hit - 1f - wallLayer
-            if (Physics.Raycast(transform.position, transform.right, out hit, 1f, wallLayer) || Physics.Raycast(transform.position, -transform.right, out hit, 1f, wallLayer))
-            {
-
-                // isTouchingWall - True
-                isTouchingWall = true;
-
-            } // Close -  If
-
-            // Else
-            else
-            {
-
-                // isTouchingWall - False
-                isTouchingWall = false;
-
-            } // Close - Else
-
             // Player movement code - Walking
 
             // Input.GetKey(KeyCode.W) "Up / Forward"
@@ -433,6 +466,9 @@ namespace DWG.UBRS.TestStuff
 
                 // StartWalking
                 StartWalking();
+
+                // Debug Log
+                //Debug.Log("Player is walking Forward.");                
 
             } // Close - if
 
@@ -445,6 +481,9 @@ namespace DWG.UBRS.TestStuff
                 // StartWalking
                 StartWalking();
 
+                // Debug Log
+                //Debug.Log("Player is walking Backward.");                
+
             } // Close - else if
 
             // Input.GetKey(KeyCode.D) "Right"
@@ -456,6 +495,9 @@ namespace DWG.UBRS.TestStuff
                 // StartWalking
                 StartWalking();
 
+                // Debug Log
+                //Debug.Log("Player is walking Right.");               
+
             } // Close - else if
             
             // Input.GetKey(KeyCode.A) "Left"
@@ -466,6 +508,9 @@ namespace DWG.UBRS.TestStuff
 
                 // StartWalking
                 StartWalking();
+
+                // Debug Log
+                //Debug.Log("Player is walking Left.");                
 
             } // Close - else if 
 
@@ -491,6 +536,9 @@ namespace DWG.UBRS.TestStuff
                 // StartSprinting
                 StartSprinting();
 
+                // Debug Log
+                //Debug.Log("Player is running Forward.");                
+
             } // Close - if
 
             // Input.GetKey(KeyCode.S) "Down / Backward" + Input.GetKey(KeyCode.LeftShift)
@@ -504,6 +552,9 @@ namespace DWG.UBRS.TestStuff
 
                 // StartSprinting
                 StartSprinting();
+
+                // Debug Log
+                //Debug.Log("Player is running Backward.");                
 
             } // Close - else if
 
@@ -519,6 +570,9 @@ namespace DWG.UBRS.TestStuff
                 // StartSprinting
                 StartSprinting();
 
+                // Debug Log
+                //Debug.Log("Player is running Right.");                
+
             } // Close - else if
             
             // Input.GetKey(KeyCode.A) "Left" + Input.GetKey(KeyCode.LeftShift)
@@ -533,6 +587,9 @@ namespace DWG.UBRS.TestStuff
                 // StartSprinting
                 StartSprinting();
 
+                // Debug Log
+                //Debug.Log("Player is running Left.");
+
             } // Close - else if 
 
             // else
@@ -544,7 +601,7 @@ namespace DWG.UBRS.TestStuff
 
             } // Close - else
 
-        } // Close - Public - Void - Update
+        } // Close - public void Update
 
         // Call this method when the player starts walking
 
@@ -554,6 +611,9 @@ namespace DWG.UBRS.TestStuff
 
             // isWalking
             isWalking = true;
+
+            // Debug Log
+            //Debug.Log("Player is Walking.");
 
         } // Close - void StartWalking
 
@@ -565,6 +625,9 @@ namespace DWG.UBRS.TestStuff
 
             // isWalking
             isWalking = false;
+            
+            // Debug Log
+            //Debug.Log("Player is not Walking.");
 
         } // Close - void StopWalking
 
@@ -576,6 +639,9 @@ namespace DWG.UBRS.TestStuff
 
             // isSprinting
             isSprinting = true;
+            
+            // Debug Log
+            //Debug.Log("Player is Running.");
 
         } // Close - void StartSprinting
 
@@ -587,9 +653,12 @@ namespace DWG.UBRS.TestStuff
 
             // isWalking
             isSprinting = false;
+            
+            // Debug Log
+            //Debug.Log("Player is not Running.");
 
         } // Close - void StopSprinting
 
-    } // Close - Public - Class - TS_FPSController
+    } // Close - public class TS_FPSController
 
 } // Close -  Namespace - DWG.UBRS.TestStuff
