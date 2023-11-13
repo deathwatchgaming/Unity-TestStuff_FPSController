@@ -15,6 +15,9 @@ Setup Instructions:
 
 * Simply follow the simple steps found below.
 
+Note: if you already have some sort of a test terrain in place, well, 
+then you can simple skip the steps: #1, 2 & 3 and go directly to #4.
+
 ____________________________________________________________________
 
 Step 1: * Added for Nicer Organization
