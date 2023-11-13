@@ -157,6 +157,9 @@ namespace DWG.UBRS.TestStuff
            // sprintstepAudioSource
            sprintstepAudioSource = GetComponent<AudioSource>(); // Get the Audio Source component
 
+           // Dont destroy this (ie: perhaps say if desired for Scene Switch Optional)
+           //DontDestroyOnLoad(this);
+
         } // Close - public void Awake
 
         // Start is called before the first frame update
