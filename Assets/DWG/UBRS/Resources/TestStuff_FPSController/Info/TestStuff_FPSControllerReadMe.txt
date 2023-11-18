@@ -141,8 +141,9 @@ Then also modify settings for footstep sounds:
 
 Modify In "FPSController" Inspector:
 
-Footstep Sounds:
+Walking Steps Audio:
 
+Footstep Sounds:
 Element 0: Footstep01
 Element 1: Footstep02
 Element 2: Footstep03
@@ -151,12 +152,11 @@ Element 3: Footstep04
 Min Time Between Footsteps: 0.3
 Max Time Between Footsteps: 0.6
 Footstep Audio Source: FPSController (Audio Source)
-Is Walking: * unchecked (leave as such)
 Time Since Last Footstep: 0
 
+Running Steps Audio:
 
 Sprintstep Sounds:
-
 Element 0: Footstep01
 Element 1: Footstep02
 Element 2: Footstep03
@@ -165,8 +165,14 @@ Element 3: Footstep04
 Min Time Between Sprintsteps: 0.2
 Max Time Between Sprintsteps: 0.4
 Sprintstep Audio Source: FPSController (Audio Source)
-Is Sprinting: * unchecked (leave as such)
 Time Since Last Sprintstep: 0
+
+Jumping Steps Audio:
+
+Jumpstep Audio Source: FPSController (Audio Source)
+Jump Sound: Jump
+Landing Sound: Land
+
 
 ____________________________________________________________________
 
