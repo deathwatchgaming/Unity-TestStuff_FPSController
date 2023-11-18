@@ -93,7 +93,7 @@ namespace DWG.UBRS.TestStuff
             public float wallJumpForce = 10f;
 
         // Header Footstep Audio
-        [Header("Audio")]
+        [Header("Walking Steps Audio")] 
 
             // Walking Footsteps
             
@@ -113,6 +113,9 @@ namespace DWG.UBRS.TestStuff
             public float timeSinceLastFootstep; // Time since the last footstep sound
 
             // Sprinting Footsteps
+
+        // Header Footstep Audio
+        [Header("Running Steps Audio")]            
             
             // public AudioClip[] sprintstepSounds
             public AudioClip[] sprintstepSounds; // Array to hold sprint footstep sound clips
@@ -129,8 +132,25 @@ namespace DWG.UBRS.TestStuff
             // public float timeSinceLastSprintstep
             public float timeSinceLastSprintstep; // Time since the last sprint footstep sound
 
+            // Jumping Footsteps Sounds
+
+        // Header Footstep Audio
+        [Header("Jumping Steps Audio")]             
+
+            // public AudioSource jumpstepAudioSource
+            public AudioSource jumpstepAudioSource; // Reference to the Audio Source component
+
+            // public AudioClip jumpSound
+            public AudioClip jumpSound; // player footstep sound when starting jump
+
+            // public AudioClip landingSound
+            public AudioClip landingSound; // player footstep sound when ending jump (landed)           
+
         // Header Active Movement States
         [Header("Active Movement States")]
+
+            // public bool PreviouslyGrounded
+            public bool PreviouslyGrounded; // Flag to track if the player was previously grounded       
 
             // public bool canMove = true
             public bool canMove = true; // Flag to track if the player can move       
@@ -144,9 +164,15 @@ namespace DWG.UBRS.TestStuff
             // public bool isSprinting = false
             public bool isSprinting = false; // Flag to track if the player is running
 
+            // public bool isJump; 
+            public bool isJump; // Flag to track if the player started a jump
+
+            // public bool isJumping
+            public bool isJumping;  // Flag to track if the player is in the act of jumping
+
             // public bool isTouchingWall = false
-            public bool isTouchingWall = false; // Flag to track if the player is touching a wall
-            
+            public bool isTouchingWall = false; // Flag to track if the player is touching a wall            
+
         // public void Awake
         public void Awake()
         {
@@ -156,6 +182,9 @@ namespace DWG.UBRS.TestStuff
 
            // sprintstepAudioSource
            sprintstepAudioSource = GetComponent<AudioSource>(); // Get the Audio Source component
+
+           // jumpstepAudioSource
+           jumpstepAudioSource = GetComponent<AudioSource>(); // Get the Audio Source component
 
            // Dont destroy this (ie: perhaps say if desired for Scene Switch Optional)
            //DontDestroyOnLoad(this);
@@ -193,6 +222,9 @@ namespace DWG.UBRS.TestStuff
 
             // Cursor.visible = false
             Cursor.visible = false;
+
+            // Jumping
+            isJumping = false;
 
         } // Close - public void Start
         
@@ -295,7 +327,7 @@ namespace DWG.UBRS.TestStuff
                 moveDirection.y = jumpSpeed;
                 
                 // Debug Log
-                Debug.Log("Player is Ground Jumping.");
+                //Debug.Log("Player is Ground Jumping.");
 
             } // Close - if
 
@@ -604,7 +636,83 @@ namespace DWG.UBRS.TestStuff
 
             } // Close - else
 
+
+            // Jump Sounds
+
+            // the jump state needs to read here to make sure it is not missed
+
+            // if not isJump
+            if (!isJump)
+            {
+                // Jump
+                isJump = Input.GetButtonDown("Jump");
+
+            } // Close - if not isJump
+            
+            // if not PreviouslyGrounded & characterController.isGrounded
+            if (!PreviouslyGrounded && characterController.isGrounded)
+            {
+                // PlayLandingSound
+                PlayLandingSound();
+
+                // moveDirection.y
+                moveDirection.y = 0f;
+
+                // Jumping
+                isJumping = false;
+
+                // Debug Log
+                Debug.Log("Player Landed.");
+
+            } // Close - if not PreviouslyGrounded & characterController.isGrounded
+
+            // if not characterController.isGrounded & not Jumping & PreviouslyGrounded
+            if (!characterController.isGrounded && !isJumping && PreviouslyGrounded)
+            {
+                // moveDirection.y
+                moveDirection.y = 0f;
+
+            } // Close - if not characterController.isGrounded & not Jumping & PreviouslyGrounded
+
+            PreviouslyGrounded = characterController.isGrounded;            
+
         } // Close - public void Update
+
+        // Public - Void - FixedUpdate
+        public void FixedUpdate()
+        {
+
+            // Jump Sounds
+
+            // if characterController.isGrounded
+            if (characterController.isGrounded)
+            {
+                // moveDirection.y
+                moveDirection.y = -gravity;
+                
+                // if isJump
+                if (isJump)
+                {
+                    // moveDirection.y
+                    moveDirection.y = jumpSpeed;
+
+                    // PlayJumpSound
+                    PlayJumpSound();
+
+                    // Jump
+                    isJump = false;
+
+                    // Jumping
+                    isJumping = true;
+
+                    // Debug Log
+                    Debug.Log("Player is Jumping.");
+
+                } // Close - if isJump
+
+            } // Close - if characterController.isGrounded
+
+        }  // Close - Public - Void - FixedUpdate
 
         // Call this method when the player starts walking
 
@@ -661,6 +769,34 @@ namespace DWG.UBRS.TestStuff
             //Debug.Log("Player is not Running.");
 
         } // Close - void StopSprinting
+
+        // Jump Sounds
+
+        // Call this method when the player starts Jump
+
+        // void PlayJumpSound
+        void PlayJumpSound()
+        {
+            // jumpstepAudioSource.clip 
+            jumpstepAudioSource.clip = jumpSound;
+
+            // jumpstepAudioSource.Play
+            jumpstepAudioSource.Play();
+
+        } // Close - void PlayJumpSound
+
+        // Call this method when the player stops Jump / Lands
+        
+        // void PlayLandingSound
+        void PlayLandingSound()
+        {
+            // jumpstepAudioSource.clip 
+            jumpstepAudioSource.clip = landingSound;
+
+            // jumpstepAudioSource.Play
+            jumpstepAudioSource.Play();
+
+        } // Close - void PlayLandingSound        
 
     } // Close - public class TS_FPSController
 
