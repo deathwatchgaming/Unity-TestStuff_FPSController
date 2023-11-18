@@ -7,9 +7,7 @@
 *
 */
 
-// using - System - Engine
-using System.Collections;
-using System.Collections.Generic;
+// using - Engine
 using UnityEngine;
 
 // Namespace - DWG.UBRS.TestStuff
@@ -59,15 +57,8 @@ namespace DWG.UBRS.TestStuff
             // float rotationX = 0
             float rotationX = 0;
 
-            // HideInInspector
-            [HideInInspector]
-            public bool canMove = true; // public bool canMove = true
-        
         // Header Crouching Movement
         [Header("Crouching Movement")]
-
-            // public bool isCrouching = false
-            public bool isCrouching = false;
 
             // public float crouchHeight = 0.5f
             public float crouchHeight = 0.5f;
@@ -101,9 +92,6 @@ namespace DWG.UBRS.TestStuff
             // public float wallJumpForce = 10f
             public float wallJumpForce = 10f;
 
-            // private bool isTouchingWall = false
-            private bool isTouchingWall = false;
-
         // Header Footstep Audio
         [Header("Audio")]
 
@@ -120,9 +108,6 @@ namespace DWG.UBRS.TestStuff
             
             // public AudioSource footstepAudioSource
             public AudioSource footstepAudioSource; // Reference to the Audio Source component
-
-            // public bool isWalking = false
-            public bool isWalking = false; // Flag to track if the player is walking
 
             // public float timeSinceLastFootstep
             public float timeSinceLastFootstep; // Time since the last footstep sound
@@ -141,12 +126,27 @@ namespace DWG.UBRS.TestStuff
             // public AudioSource sprintstepAudioSource
             public AudioSource sprintstepAudioSource; // Reference to the Audio Source component
 
-            // public bool isSprinting = false
-            public bool isSprinting = false; // Flag to track if the player is sprinting
-
             // public float timeSinceLastSprintstep
             public float timeSinceLastSprintstep; // Time since the last sprint footstep sound
 
+        // Header Active Movement States
+        [Header("Active Movement States")]
+
+            // public bool canMove = true
+            public bool canMove = true; // Flag to track if the player can move       
+
+            // public bool isCrouching = false
+            public bool isCrouching = false; // Flag to track if the player is crouching
+
+            // public bool isWalking = false
+            public bool isWalking = false; // Flag to track if the player is walking
+
+            // public bool isSprinting = false
+            public bool isSprinting = false; // Flag to track if the player is running
+
+            // public bool isTouchingWall = false
+            public bool isTouchingWall = false; // Flag to track if the player is touching a wall
+            
         // public void Awake
         public void Awake()
         {
@@ -249,7 +249,7 @@ namespace DWG.UBRS.TestStuff
                     walkingSpeed = crouchSpeed;
                     
                     // Debug Log
-                    //Debug.Log("Player is Crouching.");
+                    Debug.Log("Player is Crouching.");
 
                 } // Close - if isCrouching
                 
@@ -295,7 +295,7 @@ namespace DWG.UBRS.TestStuff
                 moveDirection.y = jumpSpeed;
                 
                 // Debug Log
-                //Debug.Log("Player is Ground Jumping.");
+                Debug.Log("Player is Ground Jumping.");
 
             } // Close - if
 
@@ -309,7 +309,7 @@ namespace DWG.UBRS.TestStuff
                 moveDirection.y = wallJumpForce;
                 
                 // Debug Log
-                //Debug.Log("Player is Wall Jumping.");
+                Debug.Log("Player is Wall Jumping.");
 
                 // This adds a bit of horizontal force opposite the wall for a more dynamic jump
 
@@ -471,7 +471,7 @@ namespace DWG.UBRS.TestStuff
                 StartWalking();
 
                 // Debug Log
-                //Debug.Log("Player is walking Forward.");                
+                Debug.Log("Player is walking Forward.");                
 
             } // Close - if
 
@@ -485,7 +485,7 @@ namespace DWG.UBRS.TestStuff
                 StartWalking();
 
                 // Debug Log
-                //Debug.Log("Player is walking Backward.");                
+                Debug.Log("Player is walking Backward.");                
 
             } // Close - else if
 
@@ -499,7 +499,7 @@ namespace DWG.UBRS.TestStuff
                 StartWalking();
 
                 // Debug Log
-                //Debug.Log("Player is walking Right.");               
+                Debug.Log("Player is walking Right.");               
 
             } // Close - else if
             
@@ -513,7 +513,7 @@ namespace DWG.UBRS.TestStuff
                 StartWalking();
 
                 // Debug Log
-                //Debug.Log("Player is walking Left.");                
+                Debug.Log("Player is walking Left.");                
 
             } // Close - else if 
 
@@ -540,7 +540,7 @@ namespace DWG.UBRS.TestStuff
                 StartSprinting();
 
                 // Debug Log
-                //Debug.Log("Player is running Forward.");                
+                Debug.Log("Player is running Forward.");                
 
             } // Close - if
 
@@ -557,7 +557,7 @@ namespace DWG.UBRS.TestStuff
                 StartSprinting();
 
                 // Debug Log
-                //Debug.Log("Player is running Backward.");                
+                Debug.Log("Player is running Backward.");                
 
             } // Close - else if
 
@@ -574,7 +574,7 @@ namespace DWG.UBRS.TestStuff
                 StartSprinting();
 
                 // Debug Log
-                //Debug.Log("Player is running Right.");                
+                Debug.Log("Player is running Right.");                
 
             } // Close - else if
             
@@ -591,7 +591,7 @@ namespace DWG.UBRS.TestStuff
                 StartSprinting();
 
                 // Debug Log
-                //Debug.Log("Player is running Left.");
+                Debug.Log("Player is running Left.");
 
             } // Close - else if 
 
