@@ -171,7 +171,10 @@ namespace DWG.UBRS.TestStuff
             public bool isJumping;  // Flag to track if the player is in the act of jumping
 
             // public bool isTouchingWall = false
-            public bool isTouchingWall = false; // Flag to track if the player is touching a wall            
+            public bool isTouchingWall = false; // Flag to track if the player is touching a wall 
+
+            // public bool WallJumping = false
+            public bool isWallJumping; // Flag to track if the player is t wall jumping
 
         // public void Awake
         public void Awake()
@@ -225,6 +228,9 @@ namespace DWG.UBRS.TestStuff
 
             // Jumping
             isJumping = false;
+
+            // WallJumping
+            isWallJumping = false;
 
         } // Close - public void Start
         
@@ -319,17 +325,17 @@ namespace DWG.UBRS.TestStuff
 
             // Jumping
 
-            // if
+            // if Input.GetButton("Jump") & canMove & characterController.isGrounded
             if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
             {
 
                 // moveDirection.y
                 moveDirection.y = jumpSpeed;
-                
+
                 // Debug Log
                 //Debug.Log("Player is Ground Jumping.");
 
-            } // Close - if
+            } // Close - if Input.GetButton("Jump") & canMove & characterController.isGrounded
 
             // Wall Jumping
 
@@ -341,7 +347,7 @@ namespace DWG.UBRS.TestStuff
                 moveDirection.y = wallJumpForce;
                 
                 // Debug Log
-                Debug.Log("Player is Wall Jumping.");
+                //Debug.Log("Player is Wall Jumping.");
 
                 // This adds a bit of horizontal force opposite the wall for a more dynamic jump
 
@@ -495,7 +501,7 @@ namespace DWG.UBRS.TestStuff
 
             // Input.GetKey(KeyCode.W) "Up / Forward"
 
-            // if
+            // if Input.GetAxis("Vertical") > 0 & canMove & characterController.isGrounded
             if (Input.GetAxis("Vertical") > 0 && canMove && characterController.isGrounded)
             {
 
@@ -503,13 +509,13 @@ namespace DWG.UBRS.TestStuff
                 StartWalking();
 
                 // Debug Log
-                Debug.Log("Player is walking Forward.");                
+                Debug.Log("Player is walking Forward.");
 
-            } // Close - if
+            } // Close - if Input.GetAxis("Vertical") > 0 & canMove & characterController.isGrounded
 
             // Input.GetKey(KeyCode.S) "Down / Backward"
 
-            // else if            
+            // else if Input.GetAxis("Vertical") < 0 & canMove & characterController.isGrounded         
             else if (Input.GetAxis("Vertical") < 0 && canMove && characterController.isGrounded)
             {
 
@@ -517,13 +523,13 @@ namespace DWG.UBRS.TestStuff
                 StartWalking();
 
                 // Debug Log
-                Debug.Log("Player is walking Backward.");                
+                Debug.Log("Player is walking Backward.");
 
-            } // Close - else if
+            } // Close - else if Input.GetAxis("Vertical") < 0 & canMove & characterController.isGrounded
 
             // Input.GetKey(KeyCode.D) "Right"
 
-            // else if           
+            // else if Input.GetAxis("Horizontal") > 0 & canMove & characterController.isGrounded         
             else if (Input.GetAxis("Horizontal") > 0 && canMove && characterController.isGrounded)
             {
 
@@ -531,13 +537,13 @@ namespace DWG.UBRS.TestStuff
                 StartWalking();
 
                 // Debug Log
-                Debug.Log("Player is walking Right.");               
+                Debug.Log("Player is walking Right.");
 
-            } // Close - else if
-            
+            } // Close - else if Input.GetAxis("Horizontal") > 0 & canMove & characterController.isGrounded
+
             // Input.GetKey(KeyCode.A) "Left"
 
-            // else if           
+            // else if Input.GetAxis("Horizontal") < 0 & canMove && characterController.isGrounded       
             else if (Input.GetAxis("Horizontal") < 0 && canMove && characterController.isGrounded)
             {
 
@@ -545,9 +551,9 @@ namespace DWG.UBRS.TestStuff
                 StartWalking();
 
                 // Debug Log
-                Debug.Log("Player is walking Left.");                
+                Debug.Log("Player is walking Left.");
 
-            } // Close - else if 
+            } // Close - else if Input.GetAxis("Horizontal") < 0 & canMove & characterController.isGrounded
 
             // else
             else
@@ -561,7 +567,7 @@ namespace DWG.UBRS.TestStuff
 
             // Input.GetKey(KeyCode.W) "Up / Forward" + Input.GetKey(KeyCode.LeftShift)
 
-            // if
+            // if Input.GetAxis("Vertical") > 0 & canMove & characterController.isGrounded & isRunning
             if (Input.GetAxis("Vertical") > 0 && canMove && characterController.isGrounded && isRunning)
             {
 
@@ -572,13 +578,13 @@ namespace DWG.UBRS.TestStuff
                 StartSprinting();
 
                 // Debug Log
-                Debug.Log("Player is running Forward.");                
+                Debug.Log("Player is running Forward.");
 
-            } // Close - if
+            } // Close - if Input.GetAxis("Vertical") > 0 & canMove & characterController.isGrounded & isRunning
 
             // Input.GetKey(KeyCode.S) "Down / Backward" + Input.GetKey(KeyCode.LeftShift)
 
-            // else if            
+            // else if Input.GetAxis("Vertical") < 0 && canMove & characterController.isGrounded & isRunning          
             else if (Input.GetAxis("Vertical") < 0 && canMove && characterController.isGrounded && isRunning)
             {
 
@@ -589,13 +595,13 @@ namespace DWG.UBRS.TestStuff
                 StartSprinting();
 
                 // Debug Log
-                Debug.Log("Player is running Backward.");                
+                Debug.Log("Player is running Backward.");
 
-            } // Close - else if
+            } // Close - else if Input.GetAxis("Vertical") < 0 & canMove & characterController.isGrounded & isRunning
 
             // Input.GetKey(KeyCode.D) "Right" + Input.GetKey(KeyCode.LeftShift)
 
-            // else if           
+            // else if Input.GetAxis("Horizontal") > 0 & canMove & characterController.isGrounded & isRunning         
             else if (Input.GetAxis("Horizontal") > 0 && canMove && characterController.isGrounded && isRunning)
             {
 
@@ -606,13 +612,13 @@ namespace DWG.UBRS.TestStuff
                 StartSprinting();
 
                 // Debug Log
-                Debug.Log("Player is running Right.");                
+                Debug.Log("Player is running Right.");
 
-            } // Close - else if
-            
+            } // Close - else if Input.GetAxis("Horizontal") > 0 & canMove & characterController.isGrounded & isRunning
+
             // Input.GetKey(KeyCode.A) "Left" + Input.GetKey(KeyCode.LeftShift)
 
-            // else if           
+            // else if Input.GetAxis("Horizontal") < 0 & canMove & characterController.isGrounded & isRunning          
             else if (Input.GetAxis("Horizontal") < 0 && canMove && characterController.isGrounded && isRunning)
             {
 
@@ -625,7 +631,7 @@ namespace DWG.UBRS.TestStuff
                 // Debug Log
                 Debug.Log("Player is running Left.");
 
-            } // Close - else if 
+            } // Close - else if  Input.GetAxis("Horizontal") < 0 & canMove & characterController.isGrounded & isRunning 
 
             // else
             else
@@ -636,16 +642,38 @@ namespace DWG.UBRS.TestStuff
 
             } // Close - else
 
-
             // Jump Sounds
 
-            // the jump state needs to read here to make sure it is not missed
+            // The Jump state needs to be read here to make sure it is not missed
 
             // if not isJump
             if (!isJump)
             {
                 // Jump
-                isJump = Input.GetButtonDown("Jump");
+
+                // if Input.GetButton("Jump") & canMove & characterController.isGrounded
+                if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
+                {
+
+                    // isJump
+                    isJump = Input.GetButton("Jump");
+                    
+                    // Debug Log
+                    //Debug.Log("Jumping State.");
+
+                } // Close - if Input.GetButton("Jump") & canMove & characterController.isGrounded
+
+                // else if Input.GetButton("Jump") && canMove && isTouchingWall
+                else if (Input.GetButton("Jump") && canMove && isTouchingWall)
+                {
+
+                    // isJump
+                    isJump = Input.GetButtonDown("Jump");
+                    
+                    // Debug Log
+                    //Debug.Log("WallJumping State.");
+
+                } // Close - else if Input.GetButton("Jump") && canMove && isTouchingWall
 
             } // Close - if not isJump
             
@@ -658,11 +686,11 @@ namespace DWG.UBRS.TestStuff
                 // moveDirection.y
                 moveDirection.y = 0f;
 
-                // Jumping
+                // isJumping
                 isJumping = false;
 
                 // Debug Log
-                Debug.Log("Player Landed.");
+                Debug.Log("Player is Landed.");
 
             } // Close - if not PreviouslyGrounded & characterController.isGrounded
 
@@ -674,7 +702,44 @@ namespace DWG.UBRS.TestStuff
 
             } // Close - if not characterController.isGrounded & not Jumping & PreviouslyGrounded
 
-            PreviouslyGrounded = characterController.isGrounded;            
+            PreviouslyGrounded = characterController.isGrounded;
+
+            // WallJumping
+
+            // if Input.GetButton("Jump") & canMove && isTouchingWall
+            if (Input.GetButton("Jump") && canMove && isTouchingWall)
+            {
+                // since speedily going up a wall we want sprintstep sounds
+                isSprinting = true;
+
+                // isWallJumping
+                isWallJumping = true;
+
+                // if isWallJumping
+                if (isWallJumping)
+                {
+                    // Debug Log
+                    Debug.Log("Player is Wall Jumping.");
+
+                } // Close - if isWallJumping
+
+            } // Close - if Input.GetButton("Jump") & canMove && isTouchingWall
+
+            // else
+            else
+            {
+                // isWallJumping
+                isWallJumping = false;
+
+                // if Not isWallJumping
+                if (!isWallJumping)
+                {
+                    // Debug Log
+                    //Debug.Log("Not WallJumping State.");
+
+                } // Close - if Not isWallJumping
+
+            } // Close - else
 
         } // Close - public void Update
 
@@ -694,15 +759,15 @@ namespace DWG.UBRS.TestStuff
                 if (isJump)
                 {
                     // moveDirection.y
-                    moveDirection.y = jumpSpeed;
+                    moveDirection.y = jumpSpeed;                  
 
                     // PlayJumpSound
                     PlayJumpSound();
 
-                    // Jump
+                    // isJump
                     isJump = false;
 
-                    // Jumping
+                    // isJumping
                     isJumping = true;
 
                     // Debug Log
