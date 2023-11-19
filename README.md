@@ -28,7 +28,7 @@ OR:
 
   https://github.com/deathwatchgaming/Unity-TestStuff_FPSController/blob/main/Package/Package-Setup.txt
 
-* DWG_TestStuff_FPSController Package Setup Info:
+* DWG_TestStuff_FPSController Package:
 
   https://github.com/deathwatchgaming/Unity-TestStuff_FPSController/blob/main/Package/DWG_TestStuff_FPSController.unitypackage
 
