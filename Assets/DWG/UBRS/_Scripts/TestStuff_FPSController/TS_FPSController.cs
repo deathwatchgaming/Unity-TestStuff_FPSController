@@ -24,7 +24,9 @@ namespace DWG.UBRS.TestStuff
     public class TS_FPSController : MonoBehaviour
     {
         // CharacterController characterController
-        CharacterController characterController;    
+        CharacterController characterController;
+
+        // Standard Movement    
         
         // Header Standard Movement
         [Header("Standard Movement")]
@@ -57,6 +59,8 @@ namespace DWG.UBRS.TestStuff
             // float rotationX = 0
             float rotationX = 0;
 
+        // Crouching Movement   
+
         // Header Crouching Movement
         [Header("Crouching Movement")]
 
@@ -81,10 +85,12 @@ namespace DWG.UBRS.TestStuff
 
             // HideInInspector
             [HideInInspector]
-            public Vector3 cameraCrouchPosition; // public Vector3 cameraCrouchPosition  
+            public Vector3 cameraCrouchPosition; // public Vector3 cameraCrouchPosition 
+
+        // Wall Jumping  Movement
         
-        // Header WallJump Movement
-        [Header("WallJump Movement")]
+        // Header Wall Jump Movement
+        [Header("Wall Jump Movement")]
 
             // public LayerMask wallLayer
             public LayerMask wallLayer;
@@ -92,10 +98,12 @@ namespace DWG.UBRS.TestStuff
             // public float wallJumpForce = 10f
             public float wallJumpForce = 10f;
 
+        // Footstep Audio
+
         // Header Footstep Audio
         [Header("Walking Steps Audio")] 
 
-            // Walking Footsteps
+        // Walking Footsteps
             
             // public AudioClip[] footstepSounds
             public AudioClip[] footstepSounds; // Array to hold footstep sound clips
@@ -112,7 +120,7 @@ namespace DWG.UBRS.TestStuff
             // public float timeSinceLastFootstep
             public float timeSinceLastFootstep; // Time since the last footstep sound
 
-            // Sprinting Footsteps
+        // Sprinting Footsteps
 
         // Header Footstep Audio
         [Header("Running Steps Audio")]            
@@ -132,7 +140,7 @@ namespace DWG.UBRS.TestStuff
             // public float timeSinceLastSprintstep
             public float timeSinceLastSprintstep; // Time since the last sprint footstep sound
 
-            // Jumping Footsteps Sounds
+        // Jumping Footsteps Sounds
 
         // Header Footstep Audio
         [Header("Jumping Steps Audio")]             
@@ -144,7 +152,9 @@ namespace DWG.UBRS.TestStuff
             public AudioClip jumpSound; // player footstep sound when starting jump
 
             // public AudioClip landingSound
-            public AudioClip landingSound; // player footstep sound when ending jump (landed)           
+            public AudioClip landingSound; // player footstep sound when ending jump (landed) 
+
+        // Active Movement States          
 
         // Header Active Movement States
         [Header("Active Movement States")]
@@ -226,10 +236,10 @@ namespace DWG.UBRS.TestStuff
             // Cursor.visible = false
             Cursor.visible = false;
 
-            // Jumping
+            // isJumping
             isJumping = false;
 
-            // WallJumping
+            // isWallJumping
             isWallJumping = false;
 
         } // Close - public void Start
@@ -287,7 +297,7 @@ namespace DWG.UBRS.TestStuff
                     walkingSpeed = crouchSpeed;
                     
                     // Debug Log
-                    Debug.Log("Player is Crouching.");
+                    //Debug.Log("Player is Crouching.");
 
                 } // Close - if isCrouching
                 
@@ -345,20 +355,20 @@ namespace DWG.UBRS.TestStuff
 
                 // moveDirection.y
                 moveDirection.y = wallJumpForce;
-                
+
                 // Debug Log
                 //Debug.Log("Player is Wall Jumping.");
 
                 // This adds a bit of horizontal force opposite the wall for a more dynamic jump
 
-                // if 
+                // if Physics.Raycast transform.position, transform.right, 1f, wallLayer
                 if (Physics.Raycast(transform.position, transform.right, 1f, wallLayer))
                 {
                     
                     // moveDirection
                     moveDirection += -transform.right * wallJumpForce / 2.5f; // Adjust the divisor for stronger/weaker push.
 
-                } // Close - if
+                } // Close - if Physics.Raycast transform.position, transform.right, 1f, wallLayer
 
                 // else if
                 else if (Physics.Raycast(transform.position, -transform.right, 1f, wallLayer))
@@ -451,7 +461,7 @@ namespace DWG.UBRS.TestStuff
 
                 // Check if enough time has passed to play the next footstep sound
 
-                // if
+                // if Time.time - timeSinceLastFootstep >= Random.Range minTimeBetweenFootsteps, maxTimeBetweenFootsteps
                 if (Time.time - timeSinceLastFootstep >= Random.Range(minTimeBetweenFootsteps, maxTimeBetweenFootsteps))
                 {
 
@@ -466,8 +476,8 @@ namespace DWG.UBRS.TestStuff
                     // timeSinceLastFootstep
                     timeSinceLastFootstep = Time.time; // Update the time since the last footstep sound
 
-                } // Close - if
-    
+                } // Close - if Time.time - timeSinceLastFootstep >= Random.Range minTimeBetweenFootsteps, maxTimeBetweenFootsteps
+
             } // Close - if isWalking
 
             // Check if the player is sprinting
@@ -478,7 +488,7 @@ namespace DWG.UBRS.TestStuff
 
                 // Check if enough time has passed to play the next sprint footstep sound
 
-                // if 
+                // if Time.time - timeSinceLastSprintstep >= Random.Range minTimeBetweenSprintsteps, maxTimeBetweenSprintsteps
                 if (Time.time - timeSinceLastSprintstep >= Random.Range(minTimeBetweenSprintsteps, maxTimeBetweenSprintsteps))
                 {
 
@@ -493,8 +503,8 @@ namespace DWG.UBRS.TestStuff
                     // timeSinceLastSprintstep
                     timeSinceLastSprintstep = Time.time; // Update the time since the last sprint footstep sound
 
-                } // Close - if
-    
+                } // Close - if Time.time - timeSinceLastSprintstep >= Random.Range minTimeBetweenSprintsteps, maxTimeBetweenSprintsteps
+
             } // Close - if isSprinting
 
             // Player movement code - Walking
@@ -676,9 +686,37 @@ namespace DWG.UBRS.TestStuff
                 } // Close - else if Input.GetButton("Jump") && canMove && isTouchingWall
 
             } // Close - if not isJump
-            
-            // if not PreviouslyGrounded & characterController.isGrounded
-            if (!PreviouslyGrounded && characterController.isGrounded)
+
+            // Crouching Tweaks
+
+            // Since We have Crouching tweak the landing sound
+
+            // if PreviouslyGrounded & characterController.isGrounded & canMove & isCrouching & !isWalking & !isSprinting
+            if (PreviouslyGrounded && characterController.isGrounded && canMove && isCrouching && !isWalking && !isSprinting)
+            {
+                // Debug Log
+                Debug.Log("Player is Crouching Idle");
+                
+            } // Close - if PreviouslyGrounded & characterController.isGrounded & canMove & isCrouching & !isWalking & !isSprinting
+
+            // if PreviouslyGrounded & characterController.isGrounded & canMove & isCrouching & isWalking
+            if (PreviouslyGrounded && characterController.isGrounded && canMove && isCrouching && isWalking)
+            {
+                // Debug Log
+                Debug.Log("Player is Crouching & Walking");
+
+            } // Close - if PreviouslyGrounded & characterController.isGrounded & canMove & isCrouching & isWalking
+
+            // if PreviouslyGrounded && characterController.isGrounded && canMove && isCrouching && isSprinting
+            if (PreviouslyGrounded && characterController.isGrounded && canMove && isCrouching && isSprinting)
+            {
+                // Debug Log
+                Debug.Log("Player is Crouching & Running");
+
+            } // Close - if PreviouslyGrounded && characterController.isGrounded && canMove && isCrouching && isSprinting
+
+            // if not PreviouslyGrounded & characterController.isGrounded & canMove & isCrouching & isJumping
+            if (!PreviouslyGrounded && characterController.isGrounded && canMove && isCrouching && isJumping)
             {
                 // PlayLandingSound
                 PlayLandingSound();
@@ -690,9 +728,94 @@ namespace DWG.UBRS.TestStuff
                 isJumping = false;
 
                 // Debug Log
-                Debug.Log("Player is Landed.");
+                Debug.Log("Player is Crouching & Jumping & Landed.");
 
-            } // Close - if not PreviouslyGrounded & characterController.isGrounded
+            } // Close - if not PreviouslyGrounded & characterController.isGrounded & canMove & isCrouching & isJumping
+
+            // if not PreviouslyGrounded & characterController.isGrounded & canMove & isWalking & isCrouching
+            if (!PreviouslyGrounded && characterController.isGrounded && canMove && isWalking && isCrouching)
+            {
+                // PlayLandingSound
+                PlayLandingSound();
+
+                // moveDirection.y
+                moveDirection.y = 0f;
+
+                // isJumping
+                isJumping = false;
+
+                // Debug Log
+                Debug.Log("Player is Crouching & Walking & Landed.");
+
+            } // Close - if not PreviouslyGrounded & characterController.isGrounded & canMove & isWalking & isCrouching
+
+            // if not PreviouslyGrounded & characterController.isGrounded & canMove & isSprinting & isCrouching
+            if (!PreviouslyGrounded && characterController.isGrounded && canMove && isSprinting && isCrouching)
+            {
+                // PlayLandingSound
+                PlayLandingSound();
+
+                // moveDirection.y
+                moveDirection.y = 0f;
+
+                // isJumping
+                isJumping = false;
+
+                // Debug Log
+                Debug.Log("Player is Crouching & Running & Landed.");
+
+            } // Close - if not PreviouslyGrounded & characterController.isGrounded & canMove & isSprinting & isCrouching
+
+            // if not PreviouslyGrounded & characterController.isGrounded & canMove & isWalking & !isCrouching
+            if (!PreviouslyGrounded && characterController.isGrounded && canMove && isWalking && !isCrouching)
+            {
+                // PlayLandingSound
+                PlayLandingSound();
+
+                // moveDirection.y
+                moveDirection.y = 0f;
+
+                // isJumping
+                isJumping = false;
+
+                // Debug Log
+                Debug.Log("Player is Not Crouching & Walking & Landed.");
+
+            } // Close - if not PreviouslyGrounded & characterController.isGrounded & canMove & isWalking & !isCrouching
+
+            // if not PreviouslyGrounded & characterController.isGrounded & canMove & isSprinting & !isCrouching
+            if (!PreviouslyGrounded && characterController.isGrounded && canMove && isSprinting && !isCrouching)
+            {
+                // PlayLandingSound
+                PlayLandingSound();
+
+                // moveDirection.y
+                moveDirection.y = 0f;
+
+                // isJumping
+                isJumping = false;
+
+                // Debug Log
+                Debug.Log("Player is Not Crouching & Running & Landed.");
+
+            } // Close - if not PreviouslyGrounded & characterController.isGrounded & canMove & isSprinting & !isCrouching
+
+            // if not PreviouslyGrounded & characterController.isGrounded & canMove & !isCrouching
+            if (!PreviouslyGrounded && characterController.isGrounded && canMove && !isCrouching)
+            {
+                // PlayLandingSound
+                PlayLandingSound();
+
+                // moveDirection.y
+                moveDirection.y = 0f;
+
+                // isJumping
+                isJumping = false;
+
+                // Debug Log
+                Debug.Log("Player is Not Crouching & Landed.");
+
+            } // Close - if not PreviouslyGrounded & characterController.isGrounded & canMove & !isCrouching
 
             // if not characterController.isGrounded & not Jumping & PreviouslyGrounded
             if (!characterController.isGrounded && !isJumping && PreviouslyGrounded)
@@ -702,9 +825,10 @@ namespace DWG.UBRS.TestStuff
 
             } // Close - if not characterController.isGrounded & not Jumping & PreviouslyGrounded
 
+            // PreviouslyGrounded = characterController.isGrounded
             PreviouslyGrounded = characterController.isGrounded;
 
-            // WallJumping
+            // Wall Jumping
 
             // if Input.GetButton("Jump") & canMove && isTouchingWall
             if (Input.GetButton("Jump") && canMove && isTouchingWall)
