@@ -24,6 +24,8 @@ OR:
 (Option 2): Package Setup Source and Info:
 
 
+Unity version 2021.3.32f1 LTS:
+
 * DWG_TestStuff_FPSController Package Setup Info (Unity 2021.3.32f1 LTS):
 
   https://github.com/deathwatchgaming/Unity-TestStuff_FPSController/blob/main/Package/2021.3.32f1/Package-Setup.txt
@@ -31,6 +33,18 @@ OR:
 * DWG_TestStuff_FPSController Package (Unity 2021.3.32f1 LTS):
 
   https://github.com/deathwatchgaming/Unity-TestStuff_FPSController/blob/main/Package/2021.3.32f1/DWG_TestStuff_FPSController.unitypackage
+
+
+
+Unity Version 2022.3.12f1 LTS:
+
+* DWG_TestStuff_FPSController Package Setup Info (Unity 2022.3.12f1 LTS):
+
+  https://github.com/deathwatchgaming/Unity-TestStuff_FPSController/blob/main/Package/2022.3.12f1/Package-Setup.txt
+
+* DWG_TestStuff_FPSController Package (Unity 2022.3.12f1 LTS):
+
+  https://github.com/deathwatchgaming/Unity-TestStuff_FPSController/blob/main/Package/2022.3.12f1/DWG_TestStuff_FPSController.unitypackage
 
 
 
