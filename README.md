@@ -36,15 +36,15 @@ Unity version 2021.3.32f1 LTS:
 
 
 
-Unity Version 2022.3.12f1 LTS:
+Unity Version 2022.3.13f1 LTS:
 
-* DWG_TestStuff_FPSController Package Setup Info (Unity 2022.3.12f1 LTS):
+* DWG_TestStuff_FPSController Package Setup Info (Unity 2022.3.13f1 LTS):
 
-  https://github.com/deathwatchgaming/Unity-TestStuff_FPSController/blob/main/Package/2022.3.12f1/Package-Setup.txt
+  https://github.com/deathwatchgaming/Unity-TestStuff_FPSController/blob/main/Package/2022.3.13f1/Package-Setup.txt
 
 * DWG_TestStuff_FPSController Package (Unity 2022.3.12f1 LTS):
 
-  https://github.com/deathwatchgaming/Unity-TestStuff_FPSController/blob/main/Package/2022.3.12f1/DWG_TestStuff_FPSController.unitypackage
+  https://github.com/deathwatchgaming/Unity-TestStuff_FPSController/blob/main/Package/2022.3.13f1/DWG_TestStuff_FPSController.unitypackage
 
 
 
