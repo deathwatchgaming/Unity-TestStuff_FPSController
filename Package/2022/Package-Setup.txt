@@ -1,0 +1,29 @@
+Simple package setup:
+---------------------
+
+
+Quick Note: if you are opting to use the package, then the assets directory
+and also the manual setup instructions and other such files are not needed as
+they are not related to the package setup. As such, let us simply explain the
+basic to get the package up and going quickly for whatever your testing
+purposes may be.
+
+
+Setup:
+------
+
+1) Open a new Unity project in Unity Hub.
+
+2) Once the project is open, then start with a new empty scene.
+
+3) Next, simply add a needed new layer called: Wall
+
+4) Grab the package "DWG_TestStuff_FPSController" from
+path: "Package/DWG_TestStuff_FPSController.unitypackage"
+
+5) Import the "DWG_TestStuff_FPSController" asset / package into your
+project.
+
+6) Once the package "DWG_TestStuff_FPSController" is imported, you can then
+navigate to the DWG/UBRS/"Scenes" dir and open the scene titled: "Demo
+Scene"
