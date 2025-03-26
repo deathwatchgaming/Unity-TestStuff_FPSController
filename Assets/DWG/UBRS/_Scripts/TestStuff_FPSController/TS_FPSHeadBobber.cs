@@ -13,11 +13,9 @@ using UnityEngine;
 // Namespace - DWG.UBRS.TestStuff
 namespace DWG.UBRS.TestStuff
 {
-
     // public class TS_FPSHeadBobber
     public class TS_FPSHeadBobber : MonoBehaviour
     {
-
         // Header HeadBobbing
         [Header("HeadBobbing")]
 

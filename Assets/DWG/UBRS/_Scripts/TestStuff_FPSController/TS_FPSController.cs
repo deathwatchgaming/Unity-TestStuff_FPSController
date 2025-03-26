@@ -13,7 +13,6 @@ using UnityEngine;
 // Namespace - DWG.UBRS.TestStuff
 namespace DWG.UBRS.TestStuff
 {
-
     // RequireComponent - Type Of - CharacterController
     [RequireComponent(typeof(CharacterController))]
 
@@ -189,7 +188,6 @@ namespace DWG.UBRS.TestStuff
         // public void Awake
         public void Awake()
         {
-
            // footstepAudioSource
            footstepAudioSource = GetComponent<AudioSource>(); // Get the Audio Source component
 
@@ -211,7 +209,6 @@ namespace DWG.UBRS.TestStuff
         // public void Start
         public void Start()
         {
-
             // characterController = GetComponent CharacterController
             characterController = GetComponent<CharacterController>();
 
@@ -249,7 +246,6 @@ namespace DWG.UBRS.TestStuff
         // public void Update
         public void Update()
         {
-
             // We are grounded, so recalculate move direction based on axes
 
             // Vector3 forward
@@ -282,14 +278,12 @@ namespace DWG.UBRS.TestStuff
             // if Input.GetKeyDown(KeyCode.C) && canMove
             if (Input.GetKeyDown(KeyCode.C) && canMove)
             {
-
                 // isCrouching = !isCrouching
                 isCrouching = !isCrouching;
                 
                 // if isCrouching
                 if (isCrouching)
                 {
-
                     // characterController.height
                     characterController.height = crouchHeight;
 
@@ -304,7 +298,6 @@ namespace DWG.UBRS.TestStuff
                 // else
                 else
                 {
-
                     // characterController.height
                     characterController.height = originalHeight;
 
@@ -318,7 +311,6 @@ namespace DWG.UBRS.TestStuff
             // if isCrouching
             if (isCrouching)
             {
-
                 // playerCamera.transform.localPosition
                 playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, cameraCrouchPosition, crouchTransitionSpeed * Time.deltaTime);
 
@@ -327,7 +319,6 @@ namespace DWG.UBRS.TestStuff
             // else
             else
             {
-
                 // playerCamera.transform.localPosition
                 playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, cameraStandPosition, crouchTransitionSpeed * Time.deltaTime);
 
@@ -338,7 +329,6 @@ namespace DWG.UBRS.TestStuff
             // if Input.GetButton("Jump") & canMove & characterController.isGrounded
             if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
             {
-
                 // moveDirection.y
                 moveDirection.y = jumpSpeed;
 
@@ -352,7 +342,6 @@ namespace DWG.UBRS.TestStuff
             // else if Input.GetButton("Jump") && canMove && isTouchingWall
             else if (Input.GetButton("Jump") && canMove && isTouchingWall)
             {
-
                 // moveDirection.y
                 moveDirection.y = wallJumpForce;
 
@@ -363,8 +352,7 @@ namespace DWG.UBRS.TestStuff
 
                 // if Physics.Raycast transform.position, transform.right, 1f, wallLayer
                 if (Physics.Raycast(transform.position, transform.right, 1f, wallLayer))
-                {
-                    
+                {                    
                     // moveDirection
                     moveDirection += -transform.right * wallJumpForce / 2.5f; // Adjust the divisor for stronger/weaker push.
 
@@ -373,7 +361,6 @@ namespace DWG.UBRS.TestStuff
                 // else if
                 else if (Physics.Raycast(transform.position, -transform.right, 1f, wallLayer))
                 {
-
                     // moveDirection
                     moveDirection += transform.right * wallJumpForce / 2.5f;
 
@@ -384,7 +371,6 @@ namespace DWG.UBRS.TestStuff
             // else 
             else
             {
-
                 // moveDirection.y
                 moveDirection.y = movementDirectionY;
 
@@ -397,7 +383,6 @@ namespace DWG.UBRS.TestStuff
             // if !characterController.isGrounded
             if (!characterController.isGrounded)
             {
-
                 // moveDirection.y
                 moveDirection.y -= gravity * Time.deltaTime;
 
@@ -413,7 +398,6 @@ namespace DWG.UBRS.TestStuff
             // if canMove
             if (canMove)
             {
-
                 // rotationX
                 rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
 
@@ -436,7 +420,6 @@ namespace DWG.UBRS.TestStuff
             // if
             if (Physics.Raycast(transform.position, transform.right, out hit, 1f, wallLayer) || Physics.Raycast(transform.position, -transform.right, out hit, 1f, wallLayer))
             {
-
                 // isTouchingWall = true;
                 isTouchingWall = true;
 
@@ -445,7 +428,6 @@ namespace DWG.UBRS.TestStuff
             // else 
             else
             {
-
                 // isTouchingWall = false
                 isTouchingWall = false;
 
@@ -458,13 +440,11 @@ namespace DWG.UBRS.TestStuff
             // if isWalking
             if (isWalking)
             {
-
                 // Check if enough time has passed to play the next footstep sound
 
                 // if Time.time - timeSinceLastFootstep >= Random.Range minTimeBetweenFootsteps, maxTimeBetweenFootsteps
                 if (Time.time - timeSinceLastFootstep >= Random.Range(minTimeBetweenFootsteps, maxTimeBetweenFootsteps))
                 {
-
                     // Play a random footstep sound from the array
 
                     // AudioClip footstepSound
@@ -485,13 +465,11 @@ namespace DWG.UBRS.TestStuff
             // if isSprinting
             if (isSprinting)
             {
-
                 // Check if enough time has passed to play the next sprint footstep sound
 
                 // if Time.time - timeSinceLastSprintstep >= Random.Range minTimeBetweenSprintsteps, maxTimeBetweenSprintsteps
                 if (Time.time - timeSinceLastSprintstep >= Random.Range(minTimeBetweenSprintsteps, maxTimeBetweenSprintsteps))
                 {
-
                     // Play a random sprint footstep sound from the array
 
                     // AudioClip sprintstepSound
@@ -514,7 +492,6 @@ namespace DWG.UBRS.TestStuff
             // if Input.GetAxis("Vertical") > 0 & canMove & characterController.isGrounded
             if (Input.GetAxis("Vertical") > 0 && canMove && characterController.isGrounded)
             {
-
                 // StartWalking
                 StartWalking();
 
@@ -528,7 +505,6 @@ namespace DWG.UBRS.TestStuff
             // else if Input.GetAxis("Vertical") < 0 & canMove & characterController.isGrounded         
             else if (Input.GetAxis("Vertical") < 0 && canMove && characterController.isGrounded)
             {
-
                 // StartWalking
                 StartWalking();
 
@@ -542,7 +518,6 @@ namespace DWG.UBRS.TestStuff
             // else if Input.GetAxis("Horizontal") > 0 & canMove & characterController.isGrounded         
             else if (Input.GetAxis("Horizontal") > 0 && canMove && characterController.isGrounded)
             {
-
                 // StartWalking
                 StartWalking();
 
@@ -556,7 +531,6 @@ namespace DWG.UBRS.TestStuff
             // else if Input.GetAxis("Horizontal") < 0 & canMove && characterController.isGrounded       
             else if (Input.GetAxis("Horizontal") < 0 && canMove && characterController.isGrounded)
             {
-
                 // StartWalking
                 StartWalking();
 
@@ -580,7 +554,6 @@ namespace DWG.UBRS.TestStuff
             // if Input.GetAxis("Vertical") > 0 & canMove & characterController.isGrounded & isRunning
             if (Input.GetAxis("Vertical") > 0 && canMove && characterController.isGrounded && isRunning)
             {
-
                 // StopWalking
                 StopWalking();
 
@@ -597,7 +570,6 @@ namespace DWG.UBRS.TestStuff
             // else if Input.GetAxis("Vertical") < 0 && canMove & characterController.isGrounded & isRunning          
             else if (Input.GetAxis("Vertical") < 0 && canMove && characterController.isGrounded && isRunning)
             {
-
                 // StopWalking
                 StopWalking();
 
@@ -614,7 +586,6 @@ namespace DWG.UBRS.TestStuff
             // else if Input.GetAxis("Horizontal") > 0 & canMove & characterController.isGrounded & isRunning         
             else if (Input.GetAxis("Horizontal") > 0 && canMove && characterController.isGrounded && isRunning)
             {
-
                 // StopWalking
                 StopWalking();
 
@@ -631,7 +602,6 @@ namespace DWG.UBRS.TestStuff
             // else if Input.GetAxis("Horizontal") < 0 & canMove & characterController.isGrounded & isRunning          
             else if (Input.GetAxis("Horizontal") < 0 && canMove && characterController.isGrounded && isRunning)
             {
-
                 // StopWalking
                 StopWalking();
 
@@ -646,7 +616,6 @@ namespace DWG.UBRS.TestStuff
             // else
             else
             {
-
                 // StopSprinting
                 StopSprinting();	
 
@@ -664,7 +633,6 @@ namespace DWG.UBRS.TestStuff
                 // if Input.GetButton("Jump") & canMove & characterController.isGrounded
                 if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
                 {
-
                     // isJump
                     isJump = Input.GetButton("Jump");
                     
@@ -676,7 +644,6 @@ namespace DWG.UBRS.TestStuff
                 // else if Input.GetButton("Jump") && canMove && isTouchingWall
                 else if (Input.GetButton("Jump") && canMove && isTouchingWall)
                 {
-
                     // isJump
                     isJump = Input.GetButtonDown("Jump");
                     
@@ -870,7 +837,6 @@ namespace DWG.UBRS.TestStuff
         // Public - Void - FixedUpdate
         public void FixedUpdate()
         {
-
             // Jump Sounds
 
             // if characterController.isGrounded
@@ -908,7 +874,6 @@ namespace DWG.UBRS.TestStuff
         // void StartWalking
         void StartWalking()
         {
-
             // isWalking
             isWalking = true;
 
@@ -922,7 +887,6 @@ namespace DWG.UBRS.TestStuff
         // void StopWalking
         void StopWalking()
         {
-
             // isWalking
             isWalking = false;
             
@@ -936,7 +900,6 @@ namespace DWG.UBRS.TestStuff
         // void StartSprinting
         void StartSprinting()
         {
-
             // isSprinting
             isSprinting = true;
             
@@ -950,7 +913,6 @@ namespace DWG.UBRS.TestStuff
         // void StopSprinting
         void StopSprinting()
         {
-
             // isWalking
             isSprinting = false;
             
